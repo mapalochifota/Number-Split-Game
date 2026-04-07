@@ -1,6 +1,11 @@
 import tkinter as tk
 from game_logic import *
  
+
+numbers = []
+total_score = 0
+bank = 0
+current_turn = "Human"
  
 def start_game():
     global numbers, total_score, bank, current_turn
@@ -98,7 +103,7 @@ def human_move(move):
     update_display()
     check_game_over()
     if numbers:
-        update_moves()
+        update_moves() 
  
  
 def ai_move():

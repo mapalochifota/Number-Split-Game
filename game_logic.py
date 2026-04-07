@@ -8,22 +8,23 @@ def generate_number_list(length):
 
 
 def heuristic_score(total_score, bank, maximizing_player=True):
-    if total_score % 2 == 0 and bank % 2 == 0:
-        return +10 if not maximizing_player else -10 
-    elif total_score % 2 == 1 and bank % 2 == 1:
-        return -10 if not maximizing_player else +10
-    else:
-        return 0  # draw
+    score = 0
+    if total_score % 2 == 1 and bank % 2 == 1:
+        score += 8 if not maximizing_player else -8
+    elif total_score % 2 == 0 and bank % 2 == 0:
+        score -= 8 if not maximizing_player else -8
+    
+    return  score
 
 
 def get_legal_moves(numbers_list):
     moves = []
-    for n in set(numbers_list):
-        moves.append(("take", n))
-    if 2 in numbers_list:
-        moves.append(("split2", 2))
     if 4 in numbers_list:
-        moves.append(("split4", 4))
+        moves.append(("split4", 4))      
+    for n in sorted(set(numbers_list), reverse=True):
+        moves.append(("take", n))        
+    if 2 in numbers_list:
+        moves.append(("split2", 2))     
     return moves
 
 
@@ -94,7 +95,7 @@ def minimax(numbers_list, total_score, bank, depth, maximizing):
             min_eval = min(min_eval, eval)
         return min_eval
 
-def ai_choose_move_minimax(numbers_list, total_score, bank, max_depth=3):
+def ai_choose_move_minimax(numbers_list, total_score, bank, max_depth=5):
     best_score = -float('inf')
     best_move = None
     for move in get_legal_moves(numbers_list):
@@ -105,7 +106,7 @@ def ai_choose_move_minimax(numbers_list, total_score, bank, max_depth=3):
             best_move = move
     return best_move
 
-def ai_choose_move_alphabeta(numbers_list, total_score, bank, max_depth=3):
+def ai_choose_move_alphabeta(numbers_list, total_score, bank, max_depth=7):
     best_score = -float('inf')
     best_move = None
     for move in get_legal_moves(numbers_list):
